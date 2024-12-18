@@ -7,8 +7,13 @@ public class ClientGoodbye extends AtmOperation{
 
     @Override
     public boolean doOperation(){
-        this.getOperationContext().getAtm().expelCreditCard(30);
+        for (int cont = 0; cont < 6; cont++)
+            this.getOperationContext().getAtm().setOption(cont, null);
+        this.getOperationContext().getAtm().setInputAreaText(null);
+        
         this.getOperationContext().getAtm().setTitle("Hasta la proxima");
+        this.getOperationContext().getAtm().expelCreditCard(30);
+        
 
         return true;
 

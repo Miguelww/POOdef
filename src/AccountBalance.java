@@ -14,10 +14,10 @@ public class AccountBalance extends TitledOperation{
     }
     @Override
     public boolean doOperation()  {
-      /*  System.out.println("Operacion iniciada");
-        int balance = operationContext.getServidor().avaiable(operationContext.getATM().getCardNumber());
-        operationContext.getATM().print(List.of("Ingresos actuales:" + balance));
-        return true;    */
+        for (int cont = 0; cont < 6; cont++)
+            this.getOperationContext().getAtm().setOption(cont, null);
+        
+      
       this.getOperationContext().getAtm().setTitle("Balance");
         try {
             this.getOperationContext().getAtm().setInputAreaText("Tu balanance es "
@@ -25,10 +25,11 @@ public class AccountBalance extends TitledOperation{
         } catch (CommunicationException ex) {
             Logger.getLogger(AccountBalance.class.getName()).log(Level.SEVERE, null, ex);
         }
-     this.getOperationContext().getAtm().setOption(5, "Volver");
+     this.getOperationContext().getAtm().setOption(4, "Volver");
      char event =this.getOperationContext().getAtm().waitEvent(30);
-     if(event=='F'){
-         return true;
+     if(event=='E'){
+         
+         return false;
      }else{
          return false;
      }

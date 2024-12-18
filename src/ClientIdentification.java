@@ -23,24 +23,45 @@ public class ClientIdentification extends AtmOperation{
         
         this.getOperationContext().getAtm().setOption(0, "Intentos:");
         this.getOperationContext().getAtm().setOption(3, Integer.toString(intentos));
-        char ev = this.getOperationContext().getAtm().waitEvent(30);
-        String password = "";
+        //char ev = this.getOperationContext().getAtm().waitEvent(30);
+        //String password = "";
         
         
         while(intentos<3 && pass==false){
         
-        
+            ATMNumberCapturer a = new ATMNumberCapturer(this.getOperationContext().getAtm());
+            int passw = a.capturePassword();
+            
+        /*
         while (ev>='0'&& ev<='9'){
             password +=ev;
             this.getOperationContext().getAtm().setInputAreaText(password);
             ev = this.getOperationContext().getAtm().waitEvent(30);
         }
+            
+*/
+        try {
+                   // int test = Integer.parseInt(password);
+                    pass = this.getOperationContext().getServer().testPassword(passw,this.getOperationContext().getAtm().getCardNumber() );
+                    
+                } catch (CommunicationException ex) {
+                    Logger.getLogger(ClientIdentification.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (pass == false){
+                intentos++;
+                this.getOperationContext().getAtm().setOption(3, Integer.toString(intentos));
+                 //password = "";
+                //this.getOperationContext().getAtm().setInputAreaText(password);
+                //ev = this.getOperationContext().getAtm().waitEvent(30);
+                }
+         /*       
+                
         if (ev == 'Y'){
             
             
                 try {
-                    int test = Integer.parseInt(password);
-                    pass = this.getOperationContext().getServer().testPassword(test,this.getOperationContext().getAtm().getCardNumber() );
+                   // int test = Integer.parseInt(password);
+                    pass = this.getOperationContext().getServer().testPassword(passw,this.getOperationContext().getAtm().getCardNumber() );
                     
                 } catch (CommunicationException ex) {
                     Logger.getLogger(ClientIdentification.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,17 +81,21 @@ public class ClientIdentification extends AtmOperation{
             
         }  
     }
-     
+     */
          if (pass == false){
              this.getOperationContext().getAtm().retainCreditCard(true);
              this.getOperationContext().getAtm().setTitle("Maximo de intentos superado");
-              ev = this.getOperationContext().getAtm().waitEvent(30);
+              //ev = this.getOperationContext().getAtm().waitEvent(30);
              return false;
          }else{
              this.getOperationContext().getAtm().retainCreditCard(true);
              return true;
          }
 }
+        return pass;
+    }
 }
+
+
 
 

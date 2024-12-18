@@ -18,6 +18,33 @@ public class WithdrawCash extends TitledOperation{
 
     @Override
     public boolean doOperation() {
+        
+        for (int cont = 0; cont < 6; cont++)
+            this.getOperationContext().getAtm().setOption(cont, null);
+        
+        this.getOperationContext().getAtm().setInputAreaText(null);
+        this.getOperationContext().getAtm().setTitle("Teclee la cantidad que desea");
+        char event = this.getOperationContext().getAtm().waitEvent(30);
+        String cadena = "";
+        boolean acabado = false;
+        while(acabado == false){
+        while (event >= '0' && event <= '9') {
+            cadena += event;
+            this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
+            event = this.getOperationContext().getAtm().waitEvent(30);
+            acabado= true;
+        }
+        if (event == 'Y'){
+            
+        }else if(event == 'N'){
+            
+        }else if(event == '-'){
+            cadena = cadena.substring(cadena.length()-1);
+            this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
+            
+        }
+        }
+        
       /*  ATM atm = operationContext.getATM();
         UrjcBankServer server = operationContext.getServidor();
         long cardNumber=atm.getCardNumber();
