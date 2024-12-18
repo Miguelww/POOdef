@@ -33,7 +33,7 @@ public class OptionMenu extends AtmOperation{
         this.getOperationContext().getAtm().setOption(2, "Operaciones");
         this.getOperationContext().getAtm().setOption(3, "Cambiar contraseña");
         this.getOperationContext().getAtm().setOption(5, "Terminar");
-        
+        this.getOperationContext().getAtm().setInputAreaText("");
         char event = this.getOperationContext().getAtm().waitEvent(30);
 
         if (event == 'A'){
@@ -49,8 +49,9 @@ public class OptionMenu extends AtmOperation{
             AccountBalance saldo = new AccountBalance(this.getOperationContext());
             saldo.doOperation();
 
-
-
+        }else if (event == 'C'){
+            LastOperations last = new LastOperations(this.getOperationContext());
+            last.doOperation();
         }
 
 

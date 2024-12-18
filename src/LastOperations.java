@@ -13,6 +13,7 @@ public class LastOperations extends TitledOperation{
         List<String> operations = operationContext.getServidor().getLastOperations(operationContext.getATM().getCardNumber());
         operationContext.getATM().print(operations);
         */
+        //this.getOperationContext().getAtm().print(List.of(this.getOperationContext().getServer().getLastOperations(this.getOperationContext().getAtm().getCardNumber())));
         return true;
 
     }
