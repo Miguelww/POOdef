@@ -10,16 +10,19 @@ public class ClientManagement extends AtmOperation {
    
     @Override
     public boolean doOperation()  {
-        waitForClient();
-        clientIdentification();
+        boolean encendido = true;
+        while(encendido = true){
+            waitForClient();
+            clientIdentification();
+            
+        }
         return false;
     }
     
 
     private void presentOptions(){
-
-        
-
+        OptionMenu opciones = new OptionMenu(this.getOperationContext());
+        opciones.doOperation();
     }
     private void waitForClient(){
         
@@ -37,7 +40,10 @@ public class ClientManagement extends AtmOperation {
     
     private void clientIdentification(){
         ClientIdentification c = new ClientIdentification(this.getOperationContext());
-        c.doOperation();
+       boolean identificado = c.doOperation();
+        if (identificado == true){
+            presentOptions();
+        }
         
     }
 

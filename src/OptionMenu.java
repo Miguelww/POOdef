@@ -18,6 +18,18 @@ public class OptionMenu extends AtmOperation{
 
     @Override
     public boolean doOperation()  {
+        for (int cont = 0; cont < 6; cont++)
+            this.getOperationContext().getAtm().setOption(cont, null);
+        
+         this.getOperationContext().getAtm().setTitle("Selecciones la opción que desee");
+        this.getOperationContext().getAtm().setOption(0, "Sacar dinero");
+        this.getOperationContext().getAtm().setOption(1, "Consultar saldo");
+        this.getOperationContext().getAtm().setOption(5, "Terminar");
+        
+        char event = this.getOperationContext().getAtm().waitEvent(30);
+        
+        
+        
         return false;
     }
 
