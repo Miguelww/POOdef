@@ -13,7 +13,7 @@ public class WithdrawCash extends TitledOperation{
     }
     @Override
     public String getTitle() {
-        return "Withdraw Cash";
+        return "Retirada en efectivo";
     }
 
     @Override
@@ -25,9 +25,9 @@ public class WithdrawCash extends TitledOperation{
         this.getOperationContext().getAtm().setInputAreaText(null);
         this.getOperationContext().getAtm().setTitle("Teclee la cantidad que desea");
         char event = this.getOperationContext().getAtm().waitEvent(30);
-        String cadena = null;
+        String cadena = "";
         boolean acabado = false;
-        while(acabado == false){
+        while(!acabado){
         while (event >= '0' && event <= '9') {
             cadena=cadena.concat(String.valueOf((event))); //Asi usamos la clase string para concatenar
             this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
@@ -37,10 +37,11 @@ public class WithdrawCash extends TitledOperation{
         if (event == 'Y'){
             this.getOperationContext().getAtm().setTitle("Cantidad:");
             this.getOperationContext().getAtm().setInputAreaText(cadena);
-            this.getOperationContext().getAtm().print(List.of(cadena));
+            this.getOperationContext().getAtm().print(List.of(cadena + "€"));
             
         }else if(event == 'N'){
             this.getOperationContext().getAtm().setTitle("Operacion cancelada");
+
             
         }else if(event == '-'){
             cadena = cadena.substring(cadena.length()-1);
@@ -68,7 +69,7 @@ public class WithdrawCash extends TitledOperation{
             return false;
         }
 */
-        return true;
+        return false;
 
     }
 }

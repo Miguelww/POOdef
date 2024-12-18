@@ -23,7 +23,7 @@ public class AccountBalance extends TitledOperation{
         try {
             this.getOperationContext().getAtm().setInputAreaText("Tu balanance es "
                     +(this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber()))+"€");
-            this.getOperationContext().getAtm().print(List.of(String.valueOf(this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber()))));
+            this.getOperationContext().getAtm().print(List.of("TICKET SALDO DISPONIBLE: \n" + (this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber())) + "€"));
         } catch (CommunicationException ex) {
             Logger.getLogger(AccountBalance.class.getName()).log(Level.SEVERE, null, ex);
         }

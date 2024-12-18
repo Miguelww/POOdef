@@ -21,6 +21,9 @@ public class OptionMenu extends AtmOperation{
 
     @Override
     public boolean doOperation()  {
+        boolean salir=false;
+
+        while (salir==false){
         for (int cont = 0; cont < 6; cont++)
             this.getOperationContext().getAtm().setOption(cont, null);
         
@@ -33,23 +36,26 @@ public class OptionMenu extends AtmOperation{
         
         char event = this.getOperationContext().getAtm().waitEvent(30);
 
-        if (event=='0'){
-            this.getOperationContext().getAtm().expelCreditCard(0);
-            for (int cont = 0; cont < 6; cont++)
-                this.getOperationContext().getAtm().setOption(cont, null);
-            this.getOperationContext().getAtm().setTitle("Hasta la proxima");
+        if (event == 'A'){
+            WithdrawCash sacar = new WithdrawCash(this.getOperationContext());
+            sacar.doOperation();
+
+        }else if(event == 'F'){
+            ClientGoodbye cb = new ClientGoodbye(this.getOperationContext());
+            cb.doOperation();
+            salir = true;
+
+        }else if (event == 'B'){
+            AccountBalance saldo = new AccountBalance(this.getOperationContext());
+            saldo.doOperation();
 
 
-
-
-        } else {
-            for (int cont = 0; cont < 6; cont++)
-                this.getOperationContext().getAtm().setOption(cont, null);
-            this.getOperationContext().getAtm().setTitle("Recoja la tarjeta o seleccione una opcion");
 
         }
-        
-        
+
+
+
+        }
         
         return false;
     }
