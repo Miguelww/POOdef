@@ -11,7 +11,7 @@ public class ClientManagement extends AtmOperation {
     @Override
     public boolean doOperation()  {
         boolean encendido = true;
-        while(encendido = true){
+        while(encendido==true){
             waitForClient();
             clientIdentification();
             
@@ -27,7 +27,7 @@ public class ClientManagement extends AtmOperation {
     private void waitForClient(){
         
         this.getOperationContext().getAtm().setTitle("Introduzca la tarjeta");
-        this.getOperationContext().getAtm().setInputAreaText("");
+        this.getOperationContext().getAtm().setInputAreaText(null);
         for (int cont = 0; cont < 6; cont++)
             this.getOperationContext().getAtm().setOption(cont, null);
         
@@ -41,7 +41,7 @@ public class ClientManagement extends AtmOperation {
     private void clientIdentification(){
         ClientIdentification c = new ClientIdentification(this.getOperationContext());
        boolean identificado = c.doOperation();
-        if (identificado == true){
+        if (identificado){
             presentOptions();
         }
         

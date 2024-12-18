@@ -1,4 +1,5 @@
 import javax.naming.CommunicationException;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ public class AccountBalance extends TitledOperation{
         try {
             this.getOperationContext().getAtm().setInputAreaText("Tu balanance es "
                     +(this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber()))+"€");
+            this.getOperationContext().getAtm().print(List.of(String.valueOf(this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber()))));
         } catch (CommunicationException ex) {
             Logger.getLogger(AccountBalance.class.getName()).log(Level.SEVERE, null, ex);
         }

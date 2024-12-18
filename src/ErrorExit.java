@@ -5,6 +5,11 @@ public class ErrorExit extends AtmOperation{
 
     @Override
     public boolean doOperation() {
-        return false;
+        if(!getOperationContext().getServer().comunicationAvaiable()){
+            this.getOperationContext().getAtm().expelCreditCard(0);
+        }
+
+
+        return true;
     }
 }

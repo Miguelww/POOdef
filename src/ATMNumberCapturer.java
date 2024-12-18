@@ -32,7 +32,7 @@ public class ATMNumberCapturer {
         String cantidad = "";
         char event = this.getAtm().waitEvent(30);
         boolean acabado = false;
-        while(acabado == false){
+        while(!acabado){
         while (event >= '0' && event <= '9') {
             cantidad += event;
             this.getAtm().setInputAreaText(cantidad + " €");
@@ -77,5 +77,5 @@ public class ATMNumberCapturer {
     public ATM getAtm() {
         return atm;
     }
-    
+
 }

@@ -25,18 +25,22 @@ public class WithdrawCash extends TitledOperation{
         this.getOperationContext().getAtm().setInputAreaText(null);
         this.getOperationContext().getAtm().setTitle("Teclee la cantidad que desea");
         char event = this.getOperationContext().getAtm().waitEvent(30);
-        String cadena = "";
+        String cadena = null;
         boolean acabado = false;
         while(acabado == false){
         while (event >= '0' && event <= '9') {
-            cadena += event;
+            cadena=cadena.concat(String.valueOf((event))); //Asi usamos la clase string para concatenar
             this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
             event = this.getOperationContext().getAtm().waitEvent(30);
             acabado= true;
         }
         if (event == 'Y'){
+            this.getOperationContext().getAtm().setTitle("Cantidad:");
+            this.getOperationContext().getAtm().setInputAreaText(cadena);
+            this.getOperationContext().getAtm().print(List.of(cadena));
             
         }else if(event == 'N'){
+            this.getOperationContext().getAtm().setTitle("Operacion cancelada");
             
         }else if(event == '-'){
             cadena = cadena.substring(cadena.length()-1);
@@ -64,7 +68,7 @@ public class WithdrawCash extends TitledOperation{
             return false;
         }
 */
-        return false;
+        return true;
 
     }
 }

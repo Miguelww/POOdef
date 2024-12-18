@@ -9,5 +9,10 @@ public class UrjcAtm {
         OperationContext c = new OperationContext(atm,server,"");
         ClientManagement management = new ClientManagement(c);
         management.doOperation();
+
+
+
+
+
     }
 }

@@ -82,13 +82,13 @@ public class ClientIdentification extends AtmOperation{
         }  
     }
      */
-         if (pass == false){
+         if (!pass){
              this.getOperationContext().getAtm().retainCreditCard(true);
              this.getOperationContext().getAtm().setTitle("Maximo de intentos superado");
               //ev = this.getOperationContext().getAtm().waitEvent(30);
              return false;
          }else{
-             this.getOperationContext().getAtm().retainCreditCard(true);
+             this.getOperationContext().getAtm().retainCreditCard(false);
              return true;
          }
 }
