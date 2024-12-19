@@ -1,12 +1,12 @@
 import sienens.ATM;
 import urjc.UrjcBankServer;
 
+import javax.naming.CommunicationException;
 import java.io.BufferedReader;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.CommunicationException;
 
 
 public class WithdrawCash extends TitledOperation{
@@ -21,49 +21,57 @@ public class WithdrawCash extends TitledOperation{
 
     @Override
     public boolean doOperation() {
-        
+
         for (int cont = 0; cont < 6; cont++)
             this.getOperationContext().getAtm().setOption(cont, null);
-        
+
         this.getOperationContext().getAtm().setInputAreaText(null);
         this.getOperationContext().getAtm().setTitle("Teclee la cantidad que desea");
-        ATMNumberCapturer a = new ATMNumberCapturer(this.getOperationContext().getAtm());
-        int cant = a.captureAmount();
-        try {
-            if( this.getOperationContext().getServer().balance(this.getOperationContext().getAtm().getCardNumber()) >=cant){
-                this.getOperationContext().getAtm().expelAmount(cant, 30);
-                this.getOperationContext().getAtm().print(List.of(cant + "€"));
-               this.getOperationContext().getServer().doOperation(this.getOperationContext().getAtm().getCardNumber(), cant);
-            }
-            /*
-            char event = this.getOperationContext().getAtm().waitEvent(30);
-            String cadena = "";
-            boolean acabado = false;
-            while(!acabado){
+        char event = this.getOperationContext().getAtm().waitEvent(30);
+        String cadena = "";
+        boolean acabado = false;
+        while(!acabado){
             while (event >= '0' && event <= '9') {
-            cadena=cadena.concat(String.valueOf((event))); //Asi usamos la clase string para concatenar
-            this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
-            event = this.getOperationContext().getAtm().waitEvent(30);
-            acabado= true;
+                cadena=cadena.concat(String.valueOf((event))); //Asi usamos la clase string para concatenar
+                this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
+                event = this.getOperationContext().getAtm().waitEvent(30);
+                acabado= true;
             }
             if (event == 'Y'){
-            this.getOperationContext().getAtm().setTitle("Cantidad:");
-            this.getOperationContext().getAtm().setInputAreaText(cadena);
-            this.getOperationContext().getAtm().print(List.of(cadena + "€"));
-            
+                try {
+                    int disponible = getOperationContext().getServer().avaiable(getOperationContext().getAtm().getCardNumber());
+                    if (disponible >= Integer.parseInt(cadena)) {
+                        this.getOperationContext().getAtm().setTitle("Cantidad:");
+                        this.getOperationContext().getAtm().setInputAreaText(cadena);
+                        this.getOperationContext().getAtm().print(List.of(cadena + "€"));
+                        this.getOperationContext().getAtm().expelAmount(Integer.parseInt(cadena), 30);
+                        this.getOperationContext().getAtm().setInputAreaText(null);
+                        this.getOperationContext().getAtm().expelCreditCard(30);
+                    } else {
+                        this.getOperationContext().getAtm().setTitle("Saldo insuficiente");
+                        getOperationContext().getAtm().setOption(4,"Terminar");
+                        event = this.getOperationContext().getAtm().waitEvent(30);
+                        if (event == 'E'){
+                            ClientGoodbye salida = new ClientGoodbye(getOperationContext());
+                            salida.doOperation();
+                        }
+                    }
+                } catch (CommunicationException e) {
+                    Logger.getLogger(WithdrawCash.class.getName()).log(Level.SEVERE, null, e);
+                }
+
             }else if(event == 'N'){
-            this.getOperationContext().getAtm().setTitle("Operacion cancelada");
-            
+                this.getOperationContext().getAtm().setTitle("Operacion cancelada");
+                event = this.getOperationContext().getAtm().waitEvent(30);
+                OptionMenu inicio = new OptionMenu(getOperationContext());
+                inicio.doOperation();
+
 
             }else if(event == '-'){
             cadena = cadena.substring(cadena.length()-1);
             this.getOperationContext().getAtm().setInputAreaText(cadena + " €");
-            
-            }
-            }
-            */
-        } catch (CommunicationException ex) {
-            Logger.getLogger(WithdrawCash.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
         }
         
       /*  ATM atm = operationContext.getATM();

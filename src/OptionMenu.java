@@ -24,40 +24,51 @@ public class OptionMenu extends AtmOperation{
         boolean salir=false;
 
         while (salir==false){
-        for (int cont = 0; cont < 6; cont++)
-            this.getOperationContext().getAtm().setOption(cont, null);
-        
-        this.getOperationContext().getAtm().setTitle("Seleccione la opción que desee");
-        this.getOperationContext().getAtm().setOption(0, "Sacar dinero");
-        this.getOperationContext().getAtm().setOption(1, "Consultar saldo");
-        this.getOperationContext().getAtm().setOption(2, "Operaciones");
-        this.getOperationContext().getAtm().setOption(3, "Cambiar contraseña");
-        this.getOperationContext().getAtm().setOption(5, "Terminar");
-        this.getOperationContext().getAtm().setInputAreaText("");
-        char event = this.getOperationContext().getAtm().waitEvent(30);
+            if (getOperationContext().getServer().comunicationAvaiable()){
+                for (int cont = 0; cont < 6; cont++)
+                    this.getOperationContext().getAtm().setOption(cont, null);
 
-        if (event == 'A'){
-            WithdrawCash sacar = new WithdrawCash(this.getOperationContext());
-            sacar.doOperation();
+                this.getOperationContext().getAtm().setTitle("Seleccione la opción que desee");
+                this.getOperationContext().getAtm().setOption(0, "Sacar dinero");
+                this.getOperationContext().getAtm().setOption(1, "Consultar saldo");
+                this.getOperationContext().getAtm().setOption(2, "Operaciones");
+                this.getOperationContext().getAtm().setOption(3, "Cambiar contraseña");
+                this.getOperationContext().getAtm().setOption(4, "Idioma");
+                this.getOperationContext().getAtm().setOption(5, "Terminar");
 
-        }else if(event == 'F'){
-            ClientGoodbye cb = new ClientGoodbye(this.getOperationContext());
-            cb.doOperation();
-            salir = true;
+                char event = this.getOperationContext().getAtm().waitEvent(30);
 
-        }else if (event == 'B'){
-            AccountBalance saldo = new AccountBalance(this.getOperationContext());
-            saldo.doOperation();
+                if (event == 'A'){
+                    WithdrawCash sacar = new WithdrawCash(this.getOperationContext());
+                    sacar.doOperation();
 
-        }else if (event == 'C'){
-            LastOperations last = new LastOperations(this.getOperationContext());
-            last.doOperation();
+                }else if(event == 'F'){
+                    ClientGoodbye cb = new ClientGoodbye(this.getOperationContext());
+                    cb.doOperation();
+                    salir = true;
+
+                }else if (event == 'B'){
+                    AccountBalance saldo = new AccountBalance(this.getOperationContext());
+                    saldo.doOperation();
+
+
+
+                } else if (event == 'C'){
+                    LastOperations operaciones = new LastOperations(this.getOperationContext());
+                    operaciones.doOperation();
+                } else if (event == 'E'){
+                    IdiomSelection idioma = new IdiomSelection(this.getOperationContext());
+                    idioma.doOperation();
+
+                }
+
+
+            } else {
+                ErrorExit error = new ErrorExit(this.getOperationContext());
+                error.doOperation();
+            }
         }
 
-
-
-        }
-        
         return false;
     }
 
